@@ -87,7 +87,8 @@ if os.path.exists('game_type.csv'):
     
     # Display overall bar charts for the selected column in the full dataset
     st.write("### Overall Chart for Selected Column in Full Dataset")
-
+    
+  
     if overall_column:
         if df[overall_column].dtype == 'object' and df[overall_column].nunique() > 1:
             st.write(f"#### {overall_column} Distribution in Full Dataset")
@@ -96,6 +97,10 @@ if os.path.exists('game_type.csv'):
         else:
             st.write(f"No sufficient categorical data available for {overall_column}.")
 
+    st.header("Game Cultural Fit matrix")
+    st.image("picgt.PNG")
+    st.info("built by dw")
 else:
     st.error("The file 'game_type.csv' was not found.")
-    st.info("built by dw")
+
+
