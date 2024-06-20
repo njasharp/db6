@@ -97,7 +97,7 @@ if os.path.exists('game_type.csv'):
         else:
             st.write(f"No sufficient categorical data available for {overall_column}.")
 
-    st.header("Game Cultural Fit matrix")
+    st.header("Game Cultural Fit Matrix")
     st.image("picgt.PNG")
     st.info("built by dw")
 else:
