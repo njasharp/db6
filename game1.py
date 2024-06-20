@@ -12,6 +12,18 @@ if os.path.exists('game_type.csv'):
     # Convert data to DataFrame
     df = pd.DataFrame(data)
     
+    hide_menu_style = """
+        <style>
+        #MainMenu {visibility: hidden;}
+        footer {visibility: hidden;}
+        body {background-color: #212121;}
+        </style>
+        """
+    st.markdown(hide_menu_style, unsafe_allow_html=True)
+
+
+
+
     # Streamlit app
     st.title("Game Cultural Fit Analysis")
     
