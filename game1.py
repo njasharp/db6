@@ -30,40 +30,67 @@ if os.path.exists('game_type.csv'):
     # Sidebar for selecting quadrant
     quadrant = st.sidebar.selectbox("Select Quadrant", df["Quadrant"].unique())
     
-    # Sidebar for selecting games to display
     st.sidebar.markdown("### Select Games to Display")
-    games_to_display = st.sidebar.multiselect(
-        "Games", 
-        df[df["Quadrant"] == quadrant]["Game"].unique(), 
-        default=df[df["Quadrant"] == quadrant]["Game"].unique()
-    )
-    
+
+    # Get unique games for the current quadrant
+    unique_games = df[df["Quadrant"] == quadrant]["Game"].unique()
+
+    # Create a dictionary to store the state of each checkbox
+    games_to_display = {}
+
+    # Create a checkbox for each game
+    for game in unique_games:
+        games_to_display[game] = st.sidebar.checkbox(game, value=True)
+
+    # Filter the dataframe based on selected games
+    selected_games = [game for game, selected in games_to_display.items() if selected]
+    filtered_df = df[df["Game"].isin(selected_games)]
+
     # Sidebar for selecting columns to display
     st.sidebar.markdown("### Select Columns to Display")
-    columns_to_display = st.sidebar.multiselect(
-        "Columns", 
-        df.columns.tolist(), 
-        default=df.columns.tolist()
-    )
-    
+
+    # Get all columns from the dataframe
+    all_columns = df.columns.tolist()
+
+    # Create a dictionary to store the state of each checkbox
+    columns_to_display = {}
+
+    # Create a checkbox for each column
+    for column in all_columns:
+        columns_to_display[column] = st.sidebar.checkbox(column, value=True)
+
+    # Create a list of selected columns
+    selected_columns = [column for column, selected in columns_to_display.items() if selected]
+
+    # Use selected_columns for further processing or display
+    filtered_df = df[selected_columns]
+
+
+
+
     # Sidebar for selecting chart type
     st.sidebar.markdown("### Select Chart Type")
     chart_type = st.sidebar.selectbox(
         "Chart Type", 
-        ["Bar Chart", "Line Chart", "Pie Chart"]
+        ["Pie Chart", "Bar Chart", "Line Chart"],
+        index=0  # This sets "Pie Chart" as the default
     )
     
     # Filter data based on selected quadrant and games
-    filtered_data = df[(df["Quadrant"] == quadrant) & (df["Game"].isin(games_to_display))][columns_to_display]
-    
+    filtered_data = df[df["Quadrant"] == quadrant]
+    filtered_data = filtered_data[filtered_data["Game"].isin(selected_games)]
+
+    # Apply column selection
+    filtered_data = filtered_data[selected_columns]
+
     # Display table
     st.write(f"### Games in {quadrant} Quadrant")
     st.dataframe(filtered_data.reset_index(drop=True))
-    
+
     # Display charts
     st.write("### Charts for Selected Games and Columns")
 
-    for column in columns_to_display:
+    for column in selected_columns:
         if column in filtered_data.columns and filtered_data[column].nunique() > 1:
             st.write(f"#### {column} Distribution")
             column_counts = filtered_data[column].value_counts()
@@ -99,7 +126,7 @@ if os.path.exists('game_type.csv'):
 
     st.header("Game Cultural Fit Matrix")
     st.image("picgt.PNG")
-    st.info("built by dw")
+    st.info("built by dw v1.2 6-27-24")
 else:
     st.error("The file 'game_type.csv' was not found.")
 
