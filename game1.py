@@ -83,11 +83,19 @@ if os.path.exists('game_type.csv'):
     # Apply column selection
     filtered_data = filtered_data[selected_columns]
 
-    # Display table
-    st.write(f"### Games in {quadrant} Quadrant")
-    st.dataframe(filtered_data.reset_index(drop=True))
+    # Assuming filtered_data and quadrant are already defined
 
-    # Display charts
+    # Function to highlight 'Yes' cells
+    def highlight_yes(val):
+        color = 'background-color: Green' if val == 'Yes' else ''
+        return color
+
+    # Display table with highlighted 'Yes' cells
+    st.write(f"### Games in {quadrant} Quadrant")
+    styled_df = filtered_data.style.applymap(highlight_yes)
+    st.dataframe(styled_df)
+
+    # Display charts (unchanged)
     st.write("### Charts for Selected Games and Columns")
 
     for column in selected_columns:
