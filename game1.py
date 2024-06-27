@@ -126,6 +126,19 @@ if os.path.exists('game_type.csv'):
 
     st.header("Game Cultural Fit Matrix")
     st.image("picgt.PNG")
+
+
+    data = pd.read_csv('game_type.csv')
+    
+    # Convert data to DataFrame
+    df = pd.DataFrame(data)
+    
+    data1 = pd.read_csv('games_datav1.csv')
+    
+    # Convert data to DataFrame
+    df1 = pd.DataFrame(data1)
+
+    st.write(df1)
     st.info("built by dw v1.2 6-27-24")
 else:
     st.error("The file 'game_type.csv' was not found.")
